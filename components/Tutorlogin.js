@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { getDatabase, ref, query, orderByChild, equalTo, get, child, value } from 'firebase/database'; // Import necessary database functions
-import { db } from '../firebase.js'; // Correct import statement
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
-
-// Import images using require
+import { getDatabase, ref, query, orderByChild, equalTo, get, child, value } from 'firebase/database'; 
+import { db } from '../firebase.js'; 
+import { useNavigation } from '@react-navigation/native'; 
 const background = require('../assets/images/trphoto2.png');
 const usernameIcon = require('../assets/images/user.png');
 const passwordIcon = require('../assets/images/password.png');
@@ -30,7 +28,6 @@ const TutorLoginPage = () => {
           console.log('Login successful');
           navigation.navigate('TutorHomeScreen', { userId }); // Pass userId as a parameter
   
-          // Handle successful login, maybe navigate to another screen
         } else {
           console.log('Incorrect password');
           setError('Incorrect email or password');
