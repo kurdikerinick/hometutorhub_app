@@ -5,18 +5,16 @@ import background from '../assets/images/gradientbgcurve.png';
 import logo from '../assets/images/home.png';
 
 const LoginPage = () => {
-  const navigation = useNavigation(); // Initialize navigation if using React Navigation
+  const navigation = useNavigation(); 
 
   const handleStudentLogin = () => {
-    // Implement student login logic here
-    // Example: navigate to the student login screen
-    navigation.navigate('StudentLoginPage'); // Replace with your actual screen name
+    
+    navigation.navigate('StudentLoginPage'); /
   };
 
   const handleTutorLogin = () => {
-    // Implement tutor login logic here
-    // Example: navigate to the tutor login screen
-    navigation.navigate('TutorLoginPage'); // Replace with your actual screen name
+    
+    navigation.navigate('TutorLoginPage'); 
   };
 
   return (
