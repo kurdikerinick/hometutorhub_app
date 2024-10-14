@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { getDatabase, ref, query, orderByChild, equalTo, get } from 'firebase/database';
+import TopBar from '../topbar'; // Assuming you're using the previously designed TopBar
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 export default function MonitorTests({ route }) {
   const [testDetails, setTestDetails] = useState([]);
   const { userId } = route.params;
@@ -42,9 +47,9 @@ export default function MonitorTests({ route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Monitor Test</Text>
-      </View>
+                  <TopBar title="Monitor Test" onBackPress={() => navigation.goBack()} />
+
+      
       <View style={styles.table}>
         <View style={styles.tableHeader}>
           <Text selectable style={[styles.tableHeaderText, styles.cell]}>Name</Text>
@@ -71,8 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    
   },
   header: {
     marginBottom: 10,
@@ -100,8 +104,9 @@ const styles = StyleSheet.create({
   },
   tableHeaderText: {
     flex: 1,
+    fontFamily: 'Poppins-Bold',
+
     fontSize: 14,
-    fontWeight: 'bold',
     textAlign: 'center',
   },
   tableRow: {

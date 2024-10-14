@@ -1,90 +1,118 @@
-import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, Pressable, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import navigation hook if using React Navigation
-import background from '../assets/images/gradientbgcurve.png';
-import logo from '../assets/images/home.png';
+import React, { useState, useEffect } from 'react';
+import { Image, StyleSheet, Text, Pressable, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import logo from '../assets/images/hometutorhublogo.png';
+
+SplashScreen.preventAutoHideAsync(); // Prevent splash screen from auto-hiding
 
 const LoginPage = () => {
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Poppins-Regular': require('../assets/Poppins/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('../assets/Poppins/Poppins-Bold.ttf'),
+      });
+      setFontsLoaded(true);
+      SplashScreen.hideAsync(); // Hide splash screen after fonts are loaded
+    }
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // You can return a loading indicator here if needed
+  }
 
   const handleStudentLogin = () => {
-    
-    navigation.navigate('StudentLoginPage'); /
+    navigation.navigate('StudentLoginPage', { userId: 'student-id-placeholder' });
   };
 
   const handleTutorLogin = () => {
-    
-    navigation.navigate('TutorLoginPage'); 
+    navigation.navigate('TutorLoginPage', { userId: 'tutor-id-placeholder' });
   };
 
   return (
-    <ImageBackground source={background} style={styles.backgroundImage}>
+    <LinearGradient
+      colors={['#1b58a8', '#1b58a8']}
+      style={styles.background}
+    >
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image source={logo} style={styles.logo} />
-        </View>
-        <Text style={styles.welcomeText}>Welcome to SR Tutorial</Text>
+        <Image source={logo} style={styles.logo} />
+        <Text style={styles.welcomeText}>Welcome!</Text>
+        <Text style={styles.subText}>Please select your role to get started.</Text>
+
         <View style={styles.buttonContainer}>
-          <View style={styles.buttonBackground}>
-            <Pressable style={styles.button} onPress={handleStudentLogin}>
-              <Text style={styles.buttonText}>Student Login</Text>
-            </Pressable>
-            <Pressable style={styles.button} onPress={handleTutorLogin}>
-              <Text style={styles.buttonText}>Tutor Login</Text>
-            </Pressable>
-          </View>
+          <Pressable style={styles.button} onPress={handleStudentLogin}>
+            <Text style={styles.buttonText}>Student</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={handleTutorLogin}>
+            <Text style={styles.buttonText}>Tutor</Text>
+          </Pressable>
         </View>
       </View>
-    </ImageBackground>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  logoContainer: {
-    marginTop: '10%',
     alignItems: 'center',
+  },
+  container: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
+    marginBottom: 30,
   },
   welcomeText: {
-    color: 'black', // Black font color
-    fontSize: 24, // Adjust the font size as needed
-    marginTop: '5%', // Adjust the margin top as needed
+    color: 'white',
+    fontSize: 30,
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  subText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 40,
+    textAlign: 'center',
   },
   buttonContainer: {
-    marginTop: '5%', // Adjust the margin top as needed
+    width: '100%',
     alignItems: 'center',
-  },
-  buttonBackground: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
   },
   button: {
-    backgroundColor: '#448aff',
+    backgroundColor: 'transparent',
     width: 200,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: 50,
+    borderRadius: 25,
     marginVertical: 10,
-    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   buttonText: {
-    color: 'white',
+    color: '#1b58a8',
     fontSize: 18,
+    fontFamily: 'Poppins-Regular',
+    fontWeight: 'bold',
   },
 });
 

@@ -9,7 +9,7 @@ const TopBar = ({ title }) => {
 
   return (
     <View style={styles.topBar}>
-      <Text style={styles.logoText}>SR Tutorials</Text>
+      <Text style={styles.logoText}>HomeTutorHub</Text>
       <Text style={styles.pageTitle}>{title}</Text>
     </View>
   );
@@ -17,27 +17,30 @@ const TopBar = ({ title }) => {
 
 const styles = StyleSheet.create({
   topBar: {
-    backgroundColor: '#0056b3',
+    backgroundColor: '#1b58a8',
     paddingTop: 50,
-    paddingBottom: 10,
+
+    paddingBottom: 25,
     paddingHorizontal: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     flexDirection: 'row',
      flexDirection: 'column', // Changed to column
     alignItems: 'left', // Centered items vertically
+    fontFamily: 'Poppins-Regular',
+
 
   },
   logoText: {
     color: 'white',
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold', // Apply the Poppins-Bold font if you need to style the title
   },
   pageTitle: {
     color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
-},
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 export default TopBar;

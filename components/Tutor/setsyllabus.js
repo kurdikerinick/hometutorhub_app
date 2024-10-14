@@ -3,28 +3,45 @@ import {
   View,
   Text,
   TextInput,
-  ActivityIndicator,
-  StyleSheet,
-  Button,
-  Modal,
   Alert,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import { getDatabase, ref, push } from 'firebase/database';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync(); // Prevent splash screen from auto-hiding
 
 export default function SetSyllabusScreen() {
   const [subject, setSubject] = useState('');
   const [topics, setTopics] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
-  const { userId, studentId } = route.params; // Assuming userId corresponds to TutorID
+  const { userId, studentId } = route.params;
 
   useEffect(() => {
-    console.log('studentId:', studentId);
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Poppins-Regular': require('../../assets/Poppins/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('../../assets/Poppins/Poppins-Bold.ttf'),
+      });
+      setFontsLoaded(true);
+      SplashScreen.hideAsync(); // Hide splash screen after fonts are loaded
+    }
+
+    loadFonts();
   }, []);
+
+  if (!fontsLoaded) {
+    return null; // You can return a loading indicator here if needed
+  }
 
   const handleSetSyllabus = () => {
     if (!subject || !topics) {
@@ -37,7 +54,7 @@ export default function SetSyllabusScreen() {
         subject_topics: topics,
         subject_name: subject,
         student_id: studentId,
-        tutor_id: userId // Assigning userId to tutor_id
+        tutor_id: userId,
       })
         .then(() => {
           console.log('Syllabus added successfully');
@@ -55,6 +72,11 @@ export default function SetSyllabusScreen() {
 
   const handleModalClose = () => {
     setShowModal(false);
+    // navigation.navigate('syllabuscopy');
+  };
+
+  const handleMarkSyllabus = () => {
+    navigation.navigate('syllabuscopy');
   };
 
   return (
@@ -77,21 +99,29 @@ export default function SetSyllabusScreen() {
       <TextInput
         style={styles.input}
         placeholder="Enter Topics"
+        value={topics}
         onChangeText={(text) => setTopics(text)}
       />
 
-      <Button title="Set Syllabus" onPress={handleSetSyllabus} style={styles.button} />
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleSetSyllabus}>
+        <Text style={styles.buttonText}>Update Syllabus</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonContainer} onPress={handleMarkSyllabus}>
+        <Text style={styles.buttonText}>Mark Syllabus</Text>
+      </TouchableOpacity>
 
       <Modal
-        animationType="slide"
         transparent={true}
         visible={showModal}
+        animationType="slide"
         onRequestClose={handleModalClose}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>{successMessage}</Text>
-            <Button title="OK" onPress={handleModalClose} />
+            <TouchableOpacity style={styles.modalButton} onPress={handleModalClose}>
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -102,31 +132,57 @@ export default function SetSyllabusScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#f8f9fa',
   },
   header: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 28,
+    color: '#343a40',
+    marginBottom: 30,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
   },
   input: {
     width: '100%',
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: '#ced4da',
     borderWidth: 1,
+    borderRadius: 8,
     marginBottom: 20,
-    paddingLeft: 10,
+    paddingLeft: 15,
+    backgroundColor: '#ffffff',
+    fontSize: 16,
+    color: '#495057',
+    fontFamily: 'Poppins-Regular', // Apply custom font here
   },
   picker: {
     width: '100%',
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: '#ced4da',
     borderWidth: 1,
+    borderRadius: 8,
     marginBottom: 20,
+    backgroundColor: '#ffffff',
   },
-  button: {
-    marginTop: 10,
+  buttonContainer: {
+    backgroundColor: '#1b58a8',
+    paddingVertical: 15,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: 'Poppins-Regular', // Apply custom font here
   },
   modalContainer: {
     flex: 1,
@@ -134,14 +190,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
+  
   modalContent: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 25,
     borderRadius: 10,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
   },
   modalText: {
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular', // Apply custom font here
+  },
+  modalButton: {
+    backgroundColor: '#1b58a8',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  modalButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular', // Apply custom font here
   },
 });

@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { getDatabase, ref, query, orderByChild, equalTo, get } from 'firebase/database';
+import TopBar from '../topbar'; // Assuming you're using the previously designed TopBar
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 const TrackSyllabus = ({ route }) => {
   const [syllabusData, setSyllabusData] = useState([]);
   const { userId } = route.params;
@@ -32,9 +37,9 @@ const TrackSyllabus = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Track Syllabus</Text>
-      </View>
+            <TopBar title="Track Syllabus" on BackPress={() => navigation.goBack()} />
+
+      
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.table}>
@@ -58,8 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
+    
   },
   headerContainer: {
     backgroundColor: '#f0f0f0',
@@ -69,8 +73,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    
   },
   contentContainer: {
     flexGrow: 1,
@@ -81,17 +88,17 @@ const styles = StyleSheet.create({
   },
   tableRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     borderBottomWidth: 1,
     borderColor: '#ddd',
-    paddingVertical: 10,
-    justifyContent: 'space-between',
-
+    paddingHorizontal: 5,
+    paddingVertical: 8,
   },
   cell: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
+    paddingHorizontal: 12,
+    fontFamily: 'Poppins-Regular',
+
   },
 });
 

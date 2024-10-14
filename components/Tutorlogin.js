@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { getDatabase, ref, query, orderByChild, equalTo, get, child, value } from 'firebase/database'; 
 import { db } from '../firebase.js'; 
 import { useNavigation } from '@react-navigation/native'; 
-const background = require('../assets/images/trphoto2.png');
+const background = require('../assets/images/mobilelogin.png');
 const usernameIcon = require('../assets/images/user.png');
 const passwordIcon = require('../assets/images/password.png');
+import { useFonts } from 'expo-font'; // Updated import
+import * as SplashScreen from 'expo-splash-screen';
 
 const TutorLoginPage = () => {
   const navigation = useNavigation(); // Initialize navigation
@@ -13,6 +15,16 @@ const TutorLoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('../assets/Poppins/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/Poppins/Poppins-Bold.ttf'),
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync(); // Hide splash screen after fonts are loaded
+    }
+  }, [fontsLoaded]);
 
   const handleLogin = async () => {
     try {
@@ -25,9 +37,8 @@ const TutorLoginPage = () => {
         const userId = Object.keys(userData)[0];
         const user = userData[userId];
         if (user.password === password) {
-          console.log('Login successful');
-          navigation.navigate('TutorHomeScreen', { userId }); // Pass userId as a parameter
-  
+          console.log('Login successful', { userId });
+          navigation.navigate('TutorHomeScreen', { userId });
         } else {
           console.log('Incorrect password');
           setError('Incorrect email or password');
@@ -41,8 +52,7 @@ const TutorLoginPage = () => {
       setError(error.message);
     }
   };
- 
-  
+    
   return (
     <View style={styles.container}>
       <Image source={background} style={styles.trphoto2} />
@@ -52,7 +62,7 @@ const TutorLoginPage = () => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          placeholderTextColor="#448aff"
+          placeholderTextColor="#1b58a8"
           onChangeText={(text) => setEmail(text)}
         />
       </View>
@@ -61,7 +71,7 @@ const TutorLoginPage = () => {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor="#448aff"
+          placeholderTextColor="#1b58a8"
           secureTextEntry={true}
           onChangeText={(text) => setPassword(text)}
         />
@@ -69,7 +79,7 @@ const TutorLoginPage = () => {
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
-      <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      {/* <Text style={styles.forgotPassword}>Forgot Password?</Text> */}
     </View>
   );
 };
@@ -87,9 +97,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   title: {
-    color: '#448aff', // Blue color
-    fontSize: 24,
+    color: '#1b58a8', // Blue color
+    fontSize: 25,
     marginTop: 20,
+    fontFamily: 'Poppins-Bold', // Apply custom font
+
   },
   inputContainer: {
     flexDirection: 'row',
@@ -104,23 +116,26 @@ const styles = StyleSheet.create({
   input: {
     width: 250,
     height: 40,
-    borderColor: '#448aff', // Blue color
+    borderColor: '#1b58a8', // Blue color
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
   },
   loginButton: {
-    backgroundColor: '#448aff', // Blue color
+    backgroundColor: '#1b58a8', // Blue color
     width: 200,
-    height: 40,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    borderRadius: 5,
+    fontSize: 30,
+    borderRadius: 50,
   },
   loginButtonText: {
     color: 'white',
     fontSize: 18,
+    fontFamily: 'Poppins-Bold', // Apply custom font
+
   },
   forgotPassword: {
     marginTop: 10,

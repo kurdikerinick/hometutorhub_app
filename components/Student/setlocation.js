@@ -55,6 +55,7 @@ console.log(userId)
       });
   
       setLocation({ latitude, longitude });
+      console.log(latitude,longitude)
     } catch (error) {
       console.error('Error getting location:', error);
     } finally {
@@ -73,11 +74,11 @@ console.log(userId)
         ) : (
           <>
             <Text style={styles.mainText}>Student Set Home Location</Text>
-            {location && (
-              <Text style={styles.mainText}>
-                Latitude: {location.latitude}, Longitude: {location.longitude}
-              </Text>
-            )}
+            {/* {location && (
+              // <Text style={styles.mainText}>
+              //   Latitude: {location.latitude}, Longitude: {location.longitude}
+              // </Text>
+            )} */}
             {successMessage ? <Text style={styles.successMessage}>{successMessage}</Text> : null}
             <TouchableOpacity
               style={styles.mainButton}
@@ -115,35 +116,47 @@ const styles = StyleSheet.create({
   },
   mainButton: {
     backgroundColor: '#0056b3',
-    padding: 10,
-    borderRadius: 5,
-    fontSize: 20,
+    padding: 15,
+    borderRadius: 50,
+    fontSize: 22,
+    fontFamily: 'Poppins-Regular',
+
   },
   content: {
     flex: 1,
     justifyContent: 'center',
+    fontFamily: 'Poppins-Bold',
+
     alignItems: 'center',
   },
   successMessage: {
     color: 'green',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Regular',
     marginVertical: 10,
   },
   modalContainer: {
     flex: 1,
+    fontSize:25,
+    padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   mainText: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 25,
+        marginBottom: 20,
+        fontFamily: 'Poppins-Bold',
+        color: '#343a40',
+
   },
 
   modalContent: {
     backgroundColor: '#fff',
     padding: 20,
+    fontFamily: 'Poppins-Bold',
+fontSize:25,
     borderRadius: 10,
     alignItems: 'center',
   },

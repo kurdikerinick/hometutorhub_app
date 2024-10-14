@@ -18,13 +18,15 @@ import TrackSyllabus from './components/Student/syllabus.js';
 import AttendanceList from './components/Student/attendance.js';
 import TopBar from './components/topbar.js';
 import BottomBar from './components/Tutor/bottombar.js';
+import SyallbusCopy from './components/Tutor/syllabuscopy.js';
+import ClassSubjectsScreen from './components/Tutor/subjects.js';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginPage">
+    <Stack.Navigator initialRouteName="LoginPage">
         <Stack.Screen name="LoginPage" component={LoginPage} options={{ headerShown: false }} />
         <Stack.Screen name="TutorLoginPage" component={TutorLoginPage} options={{ headerShown: false }}/>
         <Stack.Screen name="StudentLoginPage" component={StudentLoginPage} options={{ headerShown: false }}/>
@@ -41,7 +43,9 @@ const App = () => {
         <Stack.Screen name="TutorAddTest" component={TutorAddTest} options={{ headerShown: false }}/>
         <Stack.Screen name="SetSyllabusScreen" component={SetSyllabusScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="StudMenuScreen" component={StudMenuScreen} options={{ headerShown: false }}/>
-      </Stack.Navigator>
+        <Stack.Screen name="syllabuscopy" component={SyallbusCopy}options={{ headerShown: false }}/>
+        <Stack.Screen name="subjects" component={ClassSubjectsScreen}options={{ headerShown: false }}/>
+ </Stack.Navigator>
     </NavigationContainer>
   );
 };
